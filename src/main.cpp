@@ -1,14 +1,22 @@
 #include <iostream>
-#include "list.hpp"
-#include "static-list.hpp"
-#include "static-link-list.hpp"
-#include "linked-list.hpp"
-#include "llinked-list.hpp"
-#include "hlinked-list.hpp"
-#include "dlinked-list.hpp"
+#include "list/list.hpp"
+#include "list/static-list.hpp"
+#include "list/static-link-list.hpp"
+#include "list/linked-list.hpp"
+#include "list/llinked-list.hpp"
+#include "list/hlinked-list.hpp"
+#include "list/dlinked-list.hpp"
 
+
+void lists();
+void stacks();
 
 int main(int argc, char const *argv[]) {
+    lists();
+    return 0;
+}
+
+void lists() {
     StaticList<char> static_list(10);
     StaticLinkList<char> static_link_list(10);
     LinkedList<char> linked_list;
@@ -26,5 +34,8 @@ int main(int argc, char const *argv[]) {
     for (auto list : lists)
         test_list(*list);
     
-    return 0;
+}
+
+void stacks() {
+
 }

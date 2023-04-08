@@ -2,7 +2,7 @@
 #define STATIC_LLIST_H
 
 #include "list.hpp"
-#include "static-stack.hpp"
+#include "../stack/static-stack.hpp"
 #include <sstream>
 
 

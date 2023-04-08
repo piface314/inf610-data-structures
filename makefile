@@ -16,14 +16,14 @@ bin:
 bin/$(TARGET): obj/main.o obj/list.o obj/stack.o
 	$(CC) -o bin/$(TARGET) obj/* $(LDFLAGS)
 
-obj/main.o: src/main.cpp src/*.hpp
+obj/main.o: src/main.cpp src/list/*.hpp src/stack/*.hpp
 	$(CC) -c $(CCFLAGS) src/main.cpp -o obj/main.o
 
-obj/list.o: src/list.cpp src/list.hpp
-	$(CC) -c $(CCFLAGS) src/list.cpp -o obj/list.o
+obj/list.o: src/list/list.cpp src/list/list.hpp
+	$(CC) -c $(CCFLAGS) src/list/list.cpp -o obj/list.o
 
-obj/stack.o: src/stack.cpp src/stack.hpp
-	$(CC) -c $(CCFLAGS) src/stack.cpp -o obj/stack.o
+obj/stack.o: src/stack/stack.cpp src/stack/stack.hpp
+	$(CC) -c $(CCFLAGS) src/stack/stack.cpp -o obj/stack.o
 
 
 clean:
