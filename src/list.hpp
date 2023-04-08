@@ -20,6 +20,6 @@ std::ostream& operator<<(std::ostream& os, List<T>& list) {
     return os << list.to_string();
 }
 
-void test_list(List<int> &list);
+void test_list(List<char> &list);
 
 #endif
