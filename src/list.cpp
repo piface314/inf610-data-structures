@@ -15,7 +15,8 @@ void test_list(List<char> &list) {
     list.remove(list.size()-1);
     std::cout << list << std::endl;
 
-    std::cout << "Inserting Z at begin:\n";
+    std::cout << "Inserting M at end and Z at begin:\n";
+    list.insert(list.size(), 'M');
     list.insert(0, 'Z');
     std::cout << list << std::endl;
 
@@ -31,6 +32,20 @@ void test_list(List<char> &list) {
     std::cout << "Removing from begin and 2:\n";
     list.remove(0);
     list.remove(2);
+    std::cout << list << std::endl;
+
+    std::cout << "Removing all:\n";
+    list.remove(0);
+    list.remove(0);
+    list.remove(0);
+    list.remove(0);
+    list.remove(0);
+    list.remove(0);
+    std::cout << list << std::endl;
+
+    std::cout << "Inserting P, Q at end:\n";
+    list.insert(list.size(), 'P');
+    list.insert(list.size(), 'Q');
     std::cout << list << std::endl;
 
     std::cout << std::endl;

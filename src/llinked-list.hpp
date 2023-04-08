@@ -1,33 +1,33 @@
-#ifndef LINKED_LIST_H
-#define LINKED_LIST_H
+#ifndef LLINKED_LIST_H
+#define LLINKED_LIST_H
 
 #include "list.hpp"
 #include <sstream>
 
 template <typename T>
-class LinkedNode {
+class LLinkedNode {
 public:
     T item;
-    LinkedNode<T> *next;
-    LinkedNode(T item) : item(item), next(NULL) {}
-    ~LinkedNode() {
+    LLinkedNode<T> *next;
+    LLinkedNode(T item) : item(item), next(NULL) {}
+    ~LLinkedNode() {
         if (next != NULL)
             delete next;
     }
 };
 
 template <typename T>
-class LinkedList : public List<T> {
+class LLinkedList : public List<T> {
 private:
-    LinkedNode<T> *head;
+    LLinkedNode<T> *head, *last;
     size_t n;
 public:
-    LinkedList() {
-        this->head = NULL;
+    LLinkedList() {
+        this->head = this->last = NULL;
         this->n = 0;
     }
 
-    ~LinkedList() {
+    ~LLinkedList() {
         if (head != NULL)
             delete head;
     }
@@ -39,7 +39,7 @@ public:
     T lookup(size_t i) {
         if (i < 0 || i >= n)
             throw std::invalid_argument("index out of bounds");
-        LinkedNode<T> *node;
+        LLinkedNode<T> *node;
         for (node = head; i && node != NULL; --i, node = node->next)
             ;
         return node->item;
@@ -49,12 +49,17 @@ public:
     void insert(size_t i, T item) {
         if (i < 0 || i > n)
             throw std::invalid_argument("index out of bounds");
-        LinkedNode<T> *inserted = new LinkedNode<T>(item);
+        LLinkedNode<T> *inserted = new LLinkedNode<T>(item);
         if (i == 0) {
             inserted->next = head;
             head = inserted;
+            if (n == 0)
+                last = head;
+        } else if (i == n) {
+            last->next = inserted;
+            last = inserted;
         } else {
-            LinkedNode<T> *current;
+            LLinkedNode<T> *current;
             for (current = head; i-1 && current != NULL; --i)
                 current = current->next;
             inserted->next = current->next;
@@ -69,16 +74,20 @@ public:
             throw std::invalid_argument("index out of bounds");
         if (n == 0)
             throw std::runtime_error("list is empty");
-        LinkedNode<T> *removed = NULL;
+        LLinkedNode<T> *removed = NULL;
         if (i == 0) {
             removed = head;
             head = head->next;
+            if (head == NULL || head->next == NULL)
+                last = head;
         } else {
-            LinkedNode<T> *current;
+            LLinkedNode<T> *current;
             for (current = head; i-1 && current != NULL; --i)
                 current = current->next;
             removed = current->next;
             current->next = removed->next;
+            if (current->next == NULL) 
+                last = current;
         }
         --n;
         T item = removed->item;
@@ -90,13 +99,13 @@ public:
     std::string to_string() {
         std::stringstream ss;
         ss << "[";
-        for (LinkedNode<T> *current = head; current != NULL; current = current->next)
+        for (LLinkedNode<T> *current = head; current != NULL; current = current->next)
             if (current == head)
                 ss << current->item;
             else
                 ss << "," << current->item;
-        ss << "] : LinkedList(";
-        for (LinkedNode<T> *current = head; current != NULL; current = current->next)
+        ss << "] : LLinkedList(";
+        for (LLinkedNode<T> *current = head; current != NULL; current = current->next)
             ss << current->item << " -> ";
         ss << ")";
         return ss.str();
