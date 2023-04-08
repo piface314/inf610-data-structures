@@ -8,7 +8,9 @@
 #include "list/dlinked-list.hpp"
 #include "stack/stack.hpp"
 #include "stack/static-stack.hpp"
+#include "stack/linked-stack.hpp"
 #include "stack/double-stack.hpp"
+
 
 
 void lists();
@@ -16,8 +18,9 @@ void stacks();
 void double_stacks();
 
 int main(int argc, char const *argv[]) {
-    // stacks();
-    double_stacks();
+    // lists();
+    stacks();
+    // double_stacks();
     return 0;
 }
 
@@ -43,8 +46,10 @@ void lists() {
 
 void stacks() {
     StaticStack<char> static_stack(10);
+    LinkedStack<char> linked_stack;
     Stack<char> *stacks[] = {
-        &static_stack
+        &static_stack,
+        &linked_stack
     };
     for (auto stack : stacks)
         test_stack(*stack);

@@ -12,10 +12,10 @@ Revisão de estruturas de dados discutidas na disciplina INF610.
 - Pilha:
     - `StaticStack`: pilha com array
     - `DoubleStack`: pilha com dois topos num mesmo array
-    - `DynamicStack`: pilha com lista encadeada
+    - `LinkedStack`: pilha com lista encadeada
 - Filas:
     - `StaticQueue`: fila com array, circular
-    - `LinkedQueue`: fila encadeada
+    - `LinkedQueue`: fila com lista encadeada
 - Filas duplas:
     - `StaticDeque`: fila dupla com array
     - `LinkedDeque`: fila dupla encadeada
