@@ -5,6 +5,7 @@
 #include "linked-list.hpp"
 #include "llinked-list.hpp"
 #include "hlinked-list.hpp"
+#include "dlinked-list.hpp"
 
 
 int main(int argc, char const *argv[]) {
@@ -13,12 +14,14 @@ int main(int argc, char const *argv[]) {
     LinkedList<char> linked_list;
     LLinkedList<char> llinked_list;
     HLinkedList<char> hlinked_list;
+    DLinkedList<char> dlinked_list;
     List<char> *lists[] = {
         &static_list,
         &static_link_list,
         &linked_list,
         &llinked_list,
-        &hlinked_list
+        &hlinked_list,
+        &dlinked_list
     };
     for (auto list : lists)
         test_list(*list);

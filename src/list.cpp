@@ -20,14 +20,16 @@ void test_list(List<char> &list) {
     list.insert(0, 'Z');
     std::cout << list << std::endl;
 
-    std::cout << "Inserting X, L, R at 2:\n";
-    list.insert(2, 'X');
-    list.insert(2, 'L');
-    list.insert(2, 'R');
+    std::cout << "Inserting X, L, R at next to last:\n";
+    list.insert(list.size()-1, 'X');
+    list.insert(list.size()-1, 'L');
+    list.insert(list.size()-1, 'R');
     std::cout << list << std::endl;
 
     std::cout << "Element at 3?:\n";
     std::cout << list.lookup(3) << std::endl;
+    std::cout << "Element at previous from last?:\n";
+    std::cout << list.lookup(list.size() - 2) << std::endl;
 
     std::cout << "Removing from begin and 2:\n";
     list.remove(0);

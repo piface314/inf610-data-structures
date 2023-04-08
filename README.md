@@ -16,10 +16,10 @@ Revisão de estruturas de dados discutidas na disciplina INF610.
 - Filas:
     - `StaticQueue`: fila com array, circular
     - `LinkedQueue`: fila encadeada
-- Fila dupla:
+- Filas duplas:
     - `StaticDeque`: fila dupla com array
     - `LinkedDeque`: fila dupla encadeada
-- Fila de prioriade:
+- Filas de prioriade:
     - `Heap`: fila de prioridade
 - Árvores:
     - `BinTree`: árvore de busca binária
