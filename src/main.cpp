@@ -6,13 +6,15 @@
 #include "list/llinked-list.hpp"
 #include "list/hlinked-list.hpp"
 #include "list/dlinked-list.hpp"
+#include "stack/stack.hpp"
+#include "stack/static-stack.hpp"
 
 
 void lists();
 void stacks();
 
 int main(int argc, char const *argv[]) {
-    lists();
+    stacks();
     return 0;
 }
 
@@ -37,5 +39,10 @@ void lists() {
 }
 
 void stacks() {
-
+    StaticStack<char> static_stack(10);
+    Stack<char> *stacks[] = {
+        &static_stack
+    };
+    for (auto stack : stacks)
+        test_stack(*stack);
 }

@@ -20,6 +20,6 @@ std::ostream& operator<<(std::ostream& os, Stack<T>& stack) {
     return os << stack.to_string();
 }
 
-void test_stack(Stack<int> &stack);
+void test_stack(Stack<char> &stack);
 
 #endif
