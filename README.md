@@ -11,10 +11,15 @@ Revisão de estruturas de dados discutidas na disciplina INF610.
     - `DLinkedList`: lista dinâmica duplamente encadeada
 - Pilha:
     - `StaticStack`: pilha com array
+    - `DoubleStack`: pilha com dois topos num mesmo array
     - `DynamicStack`: pilha com lista encadeada
 - Filas:
     - `StaticQueue`: fila com array, circular
-    - `LinkedQueue`: fila comum FIFO
+    - `LinkedQueue`: fila encadeada
+- Fila dupla:
+    - `StaticDeque`: fila dupla com array
+    - `LinkedDeque`: fila dupla encadeada
+- Fila de prioriade:
     - `Heap`: fila de prioridade
 - Árvores:
     - `BinTree`: árvore de busca binária

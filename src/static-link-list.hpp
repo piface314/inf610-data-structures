@@ -108,7 +108,7 @@ public:
             if (next[i] < n_max)
                 ss << (i ? ",(" : "(") << array[i] << "|" << next[i] << ")";
             else if (next[i] == n_max)
-                ss << (i ? ",(" : "(") << array[i] << "|X)";
+                ss << (i ? ",(" : "(") << array[i] << "|\xB6)";
             else
                 ss << (i ? ",_" : "_");
         ss << ")";
