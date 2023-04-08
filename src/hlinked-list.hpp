@@ -40,8 +40,11 @@ public:
         if (i < 0 || i >= n)
             throw std::invalid_argument("index out of bounds");
         HLinkedNode<T> *node = head->next;
-        while (i--)
-            node = node->next;
+        if (i == n - 1)
+            node = last;
+        else
+            while (i--)
+                node = node->next;
         return node->item;
     }
 
