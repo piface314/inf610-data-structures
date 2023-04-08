@@ -71,7 +71,11 @@ public:
 
     std::string to_string() {
         std::stringstream ss;
-        ss << "DoubleStack(";
+        ss << "[";
+        if (size()) ss << peek(); else ss << "_";
+        ss << "...";
+        if (size_r()) ss << peek_r(); else ss << "_";
+        ss << "] : DoubleStack(";
         for (size_t i = 0; i < n_max; ++i)
             if (n_left <= i && i < n_max - n_right)
                 ss << (i ? ",_" : "_");

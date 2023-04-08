@@ -66,7 +66,9 @@ public:
 
     std::string to_string() {
         std::stringstream ss;
-        ss << "LinkedStack(@-> ";
+        ss << "[";
+        if (size()) ss << peek(); else ss << "_";
+        ss << "...] : LinkedStack(@-> ";
         for (StackNode<T> *current = head->next; current != NULL; current = current->next)
             ss << current->item << " -> ";
         ss << ")";

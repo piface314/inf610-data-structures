@@ -47,7 +47,9 @@ public:
 
     std::string to_string() {
         std::stringstream ss;
-        ss << "StaticStack(";
+        ss << "[";
+        if (size()) ss << peek(); else ss << "_";
+        ss << "...] : StaticStack(";
         for (size_t i = 0; i < n_max; ++i)
             if (i < n)
                 ss << (i ? "," : "") << array[i];
