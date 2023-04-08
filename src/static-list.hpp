@@ -23,7 +23,8 @@ public:
     }
 
     size_t size() { return n; }
-
+    virtual bool empty() { return n == 0; }
+    
     // O(1)
     T lookup(size_t i) {
         if (i < 0 || i >= n)
@@ -31,7 +32,7 @@ public:
         return array[i];
     }
     
-    // O(n)
+    // Worst case: O(n), Best case: O(1)
     void insert(size_t i, T item) {
         if (i < 0 || i > n)
             throw std::invalid_argument("index out of bounds");
@@ -42,20 +43,25 @@ public:
         array[i] = item;
     }
     
-    // O(n)
-    void remove(size_t i) {
+    // Worst case: O(n), Best case: O(1)
+    T remove(size_t i) {
         if (i < 0 || i >= n)
             throw std::invalid_argument("index out of bounds");
         if (n == 0)
             throw std::runtime_error("list is empty");
+        T item = array[i];
         for (size_t j = i; j < n; ++j)
             array[j] = array[j+1];
         --n;
+        return item;
     }
 
     std::string to_string() {
         std::stringstream ss;
-        ss << "StaticList(";
+        ss << "[";
+        for (size_t i = 0; i < n; ++i)
+            ss << (i ? "," : "") << array[i];
+        ss << "] : StaticList(";
         for (size_t i = 0; i < n_max; ++i)
             if (i < n)
                 ss << (i ? "," : "") << array[i];
