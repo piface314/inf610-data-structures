@@ -39,9 +39,12 @@ public:
     T lookup(size_t i) {
         if (i < 0 || i >= n)
             throw std::invalid_argument("index out of bounds");
-        LLinkedNode<T> *node;
-        for (node = head; i && node != NULL; --i, node = node->next)
-            ;
+        LLinkedNode<T> *node = head;
+        if (i == n - 1)
+            node = last;
+        else 
+            while (i--)
+                node = node->next;
         return node->item;
     }
 
@@ -82,7 +85,7 @@ public:
                 last = head;
         } else {
             LLinkedNode<T> *current;
-            for (current = head; i-1 && current != NULL; --i)
+            for (current = head; i - 1 > 0; --i)
                 current = current->next;
             removed = current->next;
             current->next = removed->next;
