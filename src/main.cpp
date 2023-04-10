@@ -12,6 +12,8 @@
 #include "stack/double-stack.hpp"
 #include "queue/static-queue.hpp"
 #include "queue/linked-queue.hpp"
+#include "deque/static-deque.hpp"
+#include "deque/linked-deque.hpp"
 
 
 
@@ -19,12 +21,14 @@ void lists();
 void stacks();
 void double_stacks();
 void queues();
+void deques();
 
 int main(int argc, char const *argv[]) {
     // lists();
     // stacks();
     // double_stacks();
-    queues();
+    // queues();
+    deques();
     return 0;
 }
 
@@ -68,6 +72,17 @@ void queues() {
     };
     for (auto queue : queues)
         test_queue(*queue);
+}
+
+void deques() {
+    StaticDeque<char> static_deque(10);
+    // LinkedDeque<char> linked_deque;
+    Deque<char> *deques[] = {
+        &static_deque,
+        // &linked_deque
+    };
+    for (auto deque : deques)
+        test_deque(*deque);
 }
 
 void double_stacks() {

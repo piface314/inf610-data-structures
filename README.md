@@ -2,26 +2,26 @@
 
 Revisão de estruturas de dados discutidas na disciplina INF610.
 
-- Listas:
+- `List`:
     - `StaticList`: lista estática contígua
     - `StaticLinkList`: lista estática encadeada
     - `LinkedList`: lista dinâmica encadeada
     - `LLinkedList`: lista dinâmica encadeada com ponteiro para último (v2)
     - `HLinkedList`: lista dinâmica encadeada com ponteiro para último e célula cabeça (v3)
     - `DLinkedList`: lista dinâmica duplamente encadeada
-- Pilha:
+- `Stack`:
     - `StaticStack`: pilha com array
     - `DoubleStack`: pilha com dois topos num mesmo array
     - `LinkedStack`: pilha com lista encadeada
-- Filas:
+- `Queue`:
     - `StaticQueue`: fila com array, circular
     - `LinkedQueue`: fila com lista encadeada
-- Filas duplas:
+- `Deque`:
     - `StaticDeque`: fila dupla com array
     - `LinkedDeque`: fila dupla encadeada
-- Filas de prioriade:
-    - `Heap`: fila de prioridade
-- Árvores:
+- `Heap`:
+    - `StaticHeap`: fila de prioridade com array
+- `Tree`:
     - `BinTree`: árvore de busca binária
     - `AVLTree`: árvore AVL
     - `RedBlackTree`: árvore rubro negra
