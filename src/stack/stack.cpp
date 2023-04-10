@@ -33,7 +33,7 @@ void test_stack(Stack<char> &stack) {
     stack.push('R');
     std::cout << stack << std::endl;
 
-    std::cout << "Poping all:\n";
+    std::cout << "Popping all:\n";
     while (stack.size() > 0)
         stack.pop();
     std::cout << stack << std::endl;

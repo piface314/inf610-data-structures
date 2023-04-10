@@ -10,17 +10,20 @@
 #include "stack/static-stack.hpp"
 #include "stack/linked-stack.hpp"
 #include "stack/double-stack.hpp"
+#include "queue/static-queue.hpp"
 
 
 
 void lists();
 void stacks();
 void double_stacks();
+void queues();
 
 int main(int argc, char const *argv[]) {
     // lists();
-    stacks();
+    // stacks();
     // double_stacks();
+    queues();
     return 0;
 }
 
@@ -53,6 +56,17 @@ void stacks() {
     };
     for (auto stack : stacks)
         test_stack(*stack);
+}
+
+void queues() {
+    StaticQueue<char> static_queue(10);
+    // LinkedQueue<char> linked_queue;
+    Queue<char> *queues[] = {
+        &static_queue,
+        // &linked_queue
+    };
+    for (auto queue : queues)
+        test_queue(*queue);
 }
 
 void double_stacks() {
