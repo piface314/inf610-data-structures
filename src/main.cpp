@@ -11,6 +11,7 @@
 #include "stack/linked-stack.hpp"
 #include "stack/double-stack.hpp"
 #include "queue/static-queue.hpp"
+#include "queue/linked-queue.hpp"
 
 
 
@@ -60,10 +61,10 @@ void stacks() {
 
 void queues() {
     StaticQueue<char> static_queue(10);
-    // LinkedQueue<char> linked_queue;
+    LinkedQueue<char> linked_queue;
     Queue<char> *queues[] = {
         &static_queue,
-        // &linked_queue
+        &linked_queue
     };
     for (auto queue : queues)
         test_queue(*queue);
