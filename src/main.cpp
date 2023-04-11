@@ -76,10 +76,10 @@ void queues() {
 
 void deques() {
     StaticDeque<char> static_deque(10);
-    // LinkedDeque<char> linked_deque;
+    LinkedDeque<char> linked_deque;
     Deque<char> *deques[] = {
         &static_deque,
-        // &linked_deque
+        &linked_deque
     };
     for (auto deque : deques)
         test_deque(*deque);
