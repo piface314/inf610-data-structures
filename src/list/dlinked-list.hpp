@@ -98,7 +98,8 @@ public:
                 current = current->prev;
         }
         removed = current->next;
-        current->next->prev = current;
+        if (removed->next != NULL)
+            removed->next->prev = current;
         current->next = removed->next;
         if (current->next == NULL) 
             last = current;
