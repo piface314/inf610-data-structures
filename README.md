@@ -20,7 +20,7 @@ Revisão de estruturas de dados discutidas na disciplina INF610.
     - `StaticDeque`: fila dupla com array
     - `LinkedDeque`: fila dupla encadeada
 - `Heap`:
-    - `StaticHeap`: fila de prioridade com array
+    - `BinaryHeap`: fila de prioridade com array
 - `Tree`:
     - `BinTree`: árvore de busca binária
     - `AVLTree`: árvore AVL

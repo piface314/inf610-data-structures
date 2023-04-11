@@ -14,7 +14,7 @@
 #include "queue/linked-queue.hpp"
 #include "deque/static-deque.hpp"
 #include "deque/linked-deque.hpp"
-
+#include "heap/binary-heap.hpp"
 
 
 void lists();
@@ -22,13 +22,15 @@ void stacks();
 void double_stacks();
 void queues();
 void deques();
+void heaps();
 
 int main(int argc, char const *argv[]) {
     // lists();
     // stacks();
     // double_stacks();
     // queues();
-    deques();
+    // deques();
+    heaps();
     return 0;
 }
 
@@ -83,6 +85,17 @@ void deques() {
     };
     for (auto deque : deques)
         test_deque(*deque);
+}
+
+void heaps() {
+    BinaryHeap<char> min_heap(10);
+    BinaryHeap<char, std::greater<char>> max_heap(10);
+    Heap<char> *heaps[] = {
+        &min_heap,
+        &max_heap
+    };
+    for (auto heap : heaps)
+        test_heap(*heap);
 }
 
 void double_stacks() {
