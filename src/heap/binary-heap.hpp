@@ -21,12 +21,14 @@ public:
     size_t size() { return n; }
     bool empty() { return n == 0; }
     
+    // O(1)
     T peek() {
         if (empty())
             throw std::runtime_error("heap is empty");
         return array[0];
     }
 
+    // Worst case: O(log n), Best case: O(1)
     void push(T item) {
         if (n == n_max)
             throw std::runtime_error("heap is full");
@@ -42,6 +44,7 @@ public:
         array[i] = item;
     }
 
+    // Worst case: O(log n), Best case: O(1)
     T pop() {
         if (empty())
             throw std::runtime_error("heap is empty");

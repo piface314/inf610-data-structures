@@ -15,6 +15,7 @@
 #include "deque/static-deque.hpp"
 #include "deque/linked-deque.hpp"
 #include "heap/binary-heap.hpp"
+#include "tree/bin-tree.hpp"
 
 
 void lists();
@@ -23,6 +24,7 @@ void double_stacks();
 void queues();
 void deques();
 void heaps();
+void trees();
 
 int main(int argc, char const *argv[]) {
     // lists();
@@ -30,7 +32,8 @@ int main(int argc, char const *argv[]) {
     // double_stacks();
     // queues();
     // deques();
-    heaps();
+    // heaps();
+    trees();
     return 0;
 }
 
@@ -96,6 +99,15 @@ void heaps() {
     };
     for (auto heap : heaps)
         test_heap(*heap);
+}
+
+void trees() {
+    BinTree<char,int> bin_tree;
+    Tree<char,int> *trees[] = {
+        &bin_tree,
+    };
+    for (auto tree : trees)
+        test_tree(*tree);
 }
 
 void double_stacks() {

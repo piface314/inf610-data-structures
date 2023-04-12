@@ -2,7 +2,7 @@ TARGET := structures
 CC := g++
 CCFLAGS := -O2 -Wall -g -std=c++17
 LDFLAGS := -Wall -lpthread -lm -ldl -lz -lncurses -rdynamic
-STRUCTURES := list stack queue deque heap
+STRUCTURES := list stack queue deque heap tree
 OBJS := $(addprefix obj/,$(addsuffix .o,$(STRUCTURES)))
 HEADERS := $(addprefix src/,$(addsuffix /*.hpp,$(STRUCTURES)))
 
