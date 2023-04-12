@@ -27,3 +27,6 @@ Revisão de estruturas de dados discutidas na disciplina INF610.
     - `RedBlackTree`: árvore rubro negra
     - `BTree`: árvore B
     - `BPlusTree`: árvore B+
+- `Graph`:
+    - `Graph`: grafo simples (não direcionado ou direcionado)
+    - `MultiGraph`: multigrafo, pode ter laços, e arestas duplicadas

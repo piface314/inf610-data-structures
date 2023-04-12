@@ -16,6 +16,7 @@
 #include "deque/linked-deque.hpp"
 #include "heap/binary-heap.hpp"
 #include "tree/bin-tree.hpp"
+#include "tree/avl-tree.hpp"
 
 
 void lists();
@@ -103,8 +104,10 @@ void heaps() {
 
 void trees() {
     BinTree<char,int> bin_tree;
+    AVLTree<char,int> avl_tree;
     Tree<char,int> *trees[] = {
         &bin_tree,
+        &avl_tree
     };
     for (auto tree : trees)
         test_tree(*tree);
