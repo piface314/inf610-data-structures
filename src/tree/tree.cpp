@@ -8,7 +8,7 @@ void test_tree(Tree<char,int> &tree) {
     tree.insert('T', 5);
     tree.insert('S', 7);
     std::cout << tree << std::endl;
-    
+
     std::cout << "Removing C:\n";
     tree.remove('C');
     std::cout << tree << std::endl;
@@ -45,5 +45,6 @@ void test_tree(Tree<char,int> &tree) {
     tree.insert('P', 31);
     tree.insert('Q', 37);
     std::cout << tree << std::endl;
+    
     std::cout << std::endl;
 }

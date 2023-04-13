@@ -26,6 +26,51 @@ private:
     long long height(AVLTreeNode<K,T> *node) {
         return node == NULL ? -1 : (long long)node->height;
     }
+    void update_height(AVLTreeNode<K,T> *node) {
+        node->height = (size_t)(1 + std::max(height(node->lt), height(node->rt)));
+    }
+
+    AVLTreeNode<K,T> *rotate_ll(AVLTreeNode<K,T> *node) {
+        AVLTreeNode<K,T> *rotated = node->lt;
+        node->lt = rotated->rt;
+        rotated->rt = node;
+        update_height(node);
+        update_height(rotated);
+        return rotated;
+    }
+    
+    AVLTreeNode<K,T> *rotate_lr(AVLTreeNode<K,T> *node) {
+        AVLTreeNode<K,T> *rotated = node->lt->rt;
+        node->lt->rt = rotated->lt;
+        rotated->lt = node->lt;
+        node->lt = rotated->rt;
+        rotated->rt = node;
+        update_height(node);
+        update_height(rotated->lt);
+        update_height(rotated);
+        return rotated;
+    }
+
+    AVLTreeNode<K,T> *rotate_rr(AVLTreeNode<K,T> *node) {
+        AVLTreeNode<K,T> *rotated = node->rt;
+        node->rt = rotated->lt;
+        rotated->lt = node;
+        update_height(node);
+        update_height(rotated);
+        return rotated;
+    }
+
+    AVLTreeNode<K,T> *rotate_rl(AVLTreeNode<K,T> *node) {
+        AVLTreeNode<K,T> *rotated = node->rt->lt;
+        node->rt->lt = rotated->rt;
+        rotated->rt = node->rt;
+        node->rt = rotated->lt;
+        rotated->lt = node;
+        update_height(node);
+        update_height(rotated->rt);
+        update_height(rotated);
+        return rotated;
+    }
 
     AVLTreeNode<K,T> *insert(K& key, T& item, AVLTreeNode<K,T> *node) {
         if (node == NULL)
@@ -37,28 +82,21 @@ private:
         long long height_l = height(node->lt);
         long long height_r = height(node->rt);
         long long delta = height_l - height_r;
-        if (std::abs(delta) <= 1)
+        if (std::abs(delta) <= 1) {
+            node->height = 1 + std::max(height_l, height_r);
             return node;
-        if (delta > 0) {
-            long long height_ll = height(node->lt->lt);
-            long long height_lr = height(node->lt->rt);
-            long long delta_l = height_ll - height_lr;
-            if (delta_l > 0) {
-                // LL -> single right rotation
-            } else {
-                // LR -> double right rotation (left then right)
-            }
-        } else {
-            long long height_rl = height(node->rt->lt);
-            long long height_rr = height(node->rt->rt);
-            long long delta_r = height_rl - height_rr;
-            if (delta_r < 0) {
-                // RR -> single left rotation
-            } else {
-                // RL -> double left rotation (right then left)
-            }
         }
-        return node;
+        if (delta > 0) {
+            if (height(node->lt->lt) > height(node->lt->rt))
+                return rotate_ll(node);
+            else
+                return rotate_lr(node);
+        } else {
+            if (height(node->rt->lt) > height(node->rt->rt))
+                return rotate_rl(node);
+            else
+                return rotate_rr(node);
+        }
     }
 
 public:
