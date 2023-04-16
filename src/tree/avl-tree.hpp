@@ -5,16 +5,16 @@
 #include <sstream>
 
 template <typename K, typename T>
-class AVLTreeNode {
+class AVLNode {
 public:
     K key;
     T item;
     size_t height;
-    AVLTreeNode<K,T> *next[2];
-    AVLTreeNode(K key, T item) : key(key), item(item), height(0) {
+    AVLNode<K,T> *next[2];
+    AVLNode(K key, T item) : key(key), item(item), height(0) {
         this->next[0] = this->next[1] = NULL;
     }
-    ~AVLTreeNode() {
+    ~AVLNode() {
         if (next[0] != NULL) delete next[0];
         if (next[1] != NULL) delete next[1];
     }
@@ -24,16 +24,16 @@ template <typename K, typename T>
 class AVLTree : public Tree<K,T> {
 private:
     size_t n;
-    AVLTreeNode<K,T> *root;
-    long long height(AVLTreeNode<K,T> *node) {
+    AVLNode<K,T> *root;
+    long long height(AVLNode<K,T> *node) {
         return node == NULL ? -1 : (long long)node->height;
     }
-    void update_height(AVLTreeNode<K,T> *node) {
+    void update_height(AVLNode<K,T> *node) {
         node->height = (size_t)(1 + std::max(height(node->next[0]), height(node->next[1])));
     }
 
-    AVLTreeNode<K,T> *rotation(AVLTreeNode<K,T> *node, bool dir) {
-        AVLTreeNode<K,T> *pivot = node->next[1-dir];
+    AVLNode<K,T> *rotation(AVLNode<K,T> *node, bool dir) {
+        AVLNode<K,T> *pivot = node->next[1-dir];
         node->next[1-dir] = pivot->next[dir];
         pivot->next[dir] = node;
         update_height(node);
@@ -41,8 +41,8 @@ private:
         return pivot;
     }
 
-    AVLTreeNode<K,T> *double_rotation(AVLTreeNode<K,T> *node, bool dir) {
-        AVLTreeNode<K,T> *pivot = node->next[1-dir]->next[dir];
+    AVLNode<K,T> *double_rotation(AVLNode<K,T> *node, bool dir) {
+        AVLNode<K,T> *pivot = node->next[1-dir]->next[dir];
         node->next[1-dir]->next[dir] = pivot->next[1-dir];
         pivot->next[1-dir] = node->next[1-dir];
         node->next[1-dir] = pivot->next[dir];
@@ -53,7 +53,7 @@ private:
         return pivot;
     }
 
-    AVLTreeNode<K,T> *balance(AVLTreeNode<K,T> *node) {
+    AVLNode<K,T> *balance(AVLNode<K,T> *node) {
         if (node == NULL)
             return node;
         long long height_l = height(node->next[0]);
@@ -76,9 +76,9 @@ private:
         }
     }
 
-    AVLTreeNode<K,T> *insert(K& key, T& item, AVLTreeNode<K,T> *node) {
+    AVLNode<K,T> *insert(K& key, T& item, AVLNode<K,T> *node) {
         if (node == NULL)
-            return new AVLTreeNode<K,T>(key, item);
+            return new AVLNode<K,T>(key, item);
         if (key < node->key)
             node->next[0] = insert(key, item, node->next[0]);
         else
@@ -86,7 +86,7 @@ private:
         return balance(node);
     }
 
-    AVLTreeNode<K,T> *leftmost(AVLTreeNode<K,T> *node, AVLTreeNode<K,T> *&lt) {
+    AVLNode<K,T> *leftmost(AVLNode<K,T> *node, AVLNode<K,T> *&lt) {
         if (node->next[0] == NULL) {
             lt = node;
             return node->next[1];
@@ -95,7 +95,7 @@ private:
         return balance(node);
     }
 
-    AVLTreeNode<K,T> *remove(K& key, AVLTreeNode<K,T> *node) {
+    AVLNode<K,T> *remove(K& key, AVLNode<K,T> *node) {
         if (node == NULL)
             return node;
         if (key < node->key)
@@ -103,7 +103,7 @@ private:
         else if (key > node->key)
             node->next[1] = remove(key, node->next[1]);
         else {
-            AVLTreeNode<K,T> *removed = node;
+            AVLNode<K,T> *removed = node;
             if (removed->next[0] == NULL)
                 node = removed->next[1];
             else if (removed->next[1] == NULL)
@@ -128,7 +128,7 @@ public:
     bool empty() { return n == 0; }
 
     T *search(K key) {
-        AVLTreeNode<K,T> *current = root;
+        AVLNode<K,T> *current = root;
         while (current != NULL)
             if (key < current->key)
                 current = current->next[0];
@@ -155,7 +155,7 @@ public:
         return ss.str();
     }
 
-    void to_string(std::stringstream& ss, AVLTreeNode<K,T> *node) {
+    void to_string(std::stringstream& ss, AVLNode<K,T> *node) {
         if (node == NULL) {
             ss << "()";
             return;

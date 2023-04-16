@@ -5,13 +5,13 @@
 #include <sstream>
 
 template <typename K, typename T>
-class BinTreeNode {
+class BinNode {
 public:
     K key;
     T item;
-    BinTreeNode<K,T> *lt, *rt;
-    BinTreeNode(K key, T item) : key(key), item(item), lt(NULL), rt(NULL) { }
-    ~BinTreeNode() {
+    BinNode<K,T> *lt, *rt;
+    BinNode(K key, T item) : key(key), item(item), lt(NULL), rt(NULL) { }
+    ~BinNode() {
         if (lt != NULL) delete lt;
         if (rt != NULL) delete rt;    
     }
@@ -21,7 +21,7 @@ template <typename K, typename T>
 class BinTree : public Tree<K,T> {
 private:
     size_t n;
-    BinTreeNode<K,T> *root;
+    BinNode<K,T> *root;
 public:
     BinTree() : n(0), root(NULL) { }
     ~BinTree() { delete root; }
@@ -29,7 +29,7 @@ public:
     bool empty() { return n == 0; }
 
     T *search(K key) {
-        BinTreeNode<K,T> *current = root;
+        BinNode<K,T> *current = root;
         while (current != NULL)
             if (key < current->key)
                 current = current->lt;
@@ -41,8 +41,8 @@ public:
     }
 
     void insert(K key, T item) {
-        BinTreeNode<K,T> *inserted = new BinTreeNode<K,T>(key, item);
-        BinTreeNode<K,T> **current = &root;
+        BinNode<K,T> *inserted = new BinNode<K,T>(key, item);
+        BinNode<K,T> **current = &root;
         while (*current != NULL)
             if (key < (*current)->key)
                 current = &(*current)->lt;
@@ -53,7 +53,7 @@ public:
     }
 
     void remove(K key) {
-        BinTreeNode<K,T> **current = &root, **next = NULL, *removed = NULL;
+        BinNode<K,T> **current = &root, **next = NULL, *removed = NULL;
         while (*current != NULL)
             if (key < (*current)->key)
                 current = &(*current)->lt;
@@ -90,7 +90,7 @@ public:
         return ss.str();
     }
 
-    void to_string(std::stringstream& ss, BinTreeNode<K,T> *node) {
+    void to_string(std::stringstream& ss, BinNode<K,T> *node) {
         if (node == NULL) {
             ss << "()";
             return;

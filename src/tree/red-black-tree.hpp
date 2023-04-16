@@ -8,16 +8,16 @@
 enum class RBColor { BLACK, RED };
 
 template <typename K, typename T>
-class RBTreeNode {
+class RedBlackNode {
 public:
     K key;
     T item;
     RBColor color;
-    RBTreeNode<K,T> *next[2];
-    RBTreeNode(K key, T item) : key(key), item(item), color(RBColor::RED) {
+    RedBlackNode<K,T> *next[2];
+    RedBlackNode(K key, T item) : key(key), item(item), color(RBColor::RED) {
         this->next[0] = this->next[1] = NULL;
     }
-    ~RBTreeNode() {
+    ~RedBlackNode() {
         if (next[0] != NULL) delete next[0];
         if (next[1] != NULL) delete next[1];
     }
@@ -27,20 +27,20 @@ template <typename K, typename T>
 class RedBlackTree : public Tree<K,T> {
 private:
     size_t n;
-    RBTreeNode<K,T> *root;
-    RBColor color(RBTreeNode<K,T> *node) {
+    RedBlackNode<K,T> *root;
+    RBColor color(RedBlackNode<K,T> *node) {
         return node == NULL ? RBColor::BLACK : node->color;
     }
 
-    RBTreeNode<K,T> *rotation(RBTreeNode<K,T> *node, bool dir) {
-        RBTreeNode<K,T> *pivot = node->next[1-dir];
+    RedBlackNode<K,T> *rotation(RedBlackNode<K,T> *node, bool dir) {
+        RedBlackNode<K,T> *pivot = node->next[1-dir];
         node->next[1-dir] = pivot->next[dir];
         pivot->next[dir] = node;
         return pivot;
     }
 
-    RBTreeNode<K,T> *double_rotation(RBTreeNode<K,T> *node, bool dir) {
-        RBTreeNode<K,T> *pivot = node->next[1-dir]->next[dir];
+    RedBlackNode<K,T> *double_rotation(RedBlackNode<K,T> *node, bool dir) {
+        RedBlackNode<K,T> *pivot = node->next[1-dir]->next[dir];
         node->next[1-dir]->next[dir] = pivot->next[1-dir];
         pivot->next[1-dir] = node->next[1-dir];
         node->next[1-dir] = pivot->next[dir];
@@ -48,9 +48,9 @@ private:
         return pivot;
     }
 
-    RBTreeNode<K,T> *insert(K& key, T& item, RBTreeNode<K,T> *node, bool &end) {
+    RedBlackNode<K,T> *insert(K& key, T& item, RedBlackNode<K,T> *node, bool &end) {
         if (node == NULL)
-            return new RBTreeNode<K,T>(key, item);
+            return new RedBlackNode<K,T>(key, item);
         bool dir = key >= node->key;
         node->next[dir] = insert(key, item, node->next[dir], end);
         if (end)
@@ -76,7 +76,7 @@ private:
         return node;
     }
 
-    RBTreeNode<K,T> *leftmost(RBTreeNode<K,T> *node, RBTreeNode<K,T> *&lt) {
+    RedBlackNode<K,T> *leftmost(RedBlackNode<K,T> *node, RedBlackNode<K,T> *&lt) {
         if (node->next[0] == NULL) {
             lt = node;
             return node->next[1];
@@ -85,7 +85,7 @@ private:
         return node;
     }
 
-    RBTreeNode<K,T> *remove(K& key, RBTreeNode<K,T> *node) {
+    RedBlackNode<K,T> *remove(K& key, RedBlackNode<K,T> *node) {
         // TODO: implement balance in removal
         if (node == NULL)
             return node;
@@ -94,7 +94,7 @@ private:
         else if (key > node->key)
             node->next[1] = remove(key, node->next[1]);
         else {
-            RBTreeNode<K,T> *removed = node;
+            RedBlackNode<K,T> *removed = node;
             if (removed->next[0] == NULL)
                 node = removed->next[1];
             else if (removed->next[1] == NULL)
@@ -119,7 +119,7 @@ public:
     bool empty() { return n == 0; }
 
     T *search(K key) {
-        RBTreeNode<K,T> *current = root;
+        RedBlackNode<K,T> *current = root;
         while (current != NULL)
             if (key < current->key)
                 current = current->next[0];
@@ -150,7 +150,7 @@ public:
         return ss.str();
     }
 
-    void to_string(std::stringstream& ss, RBTreeNode<K,T> *node) {
+    void to_string(std::stringstream& ss, RedBlackNode<K,T> *node) {
         if (node == NULL) {
             ss << CL_BG_BLACK CL_FG_WHITE "()" CL_RESET;
             return;
