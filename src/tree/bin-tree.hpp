@@ -105,6 +105,4 @@ public:
     }
 };
 
-void test_tree(Tree<char,int> &tree);
-
 #endif
