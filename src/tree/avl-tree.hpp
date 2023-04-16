@@ -10,11 +10,13 @@ public:
     K key;
     T item;
     size_t height;
-    AVLTreeNode<K,T> *lt, *rt;
-    AVLTreeNode(K key, T item) : key(key), item(item), height(0), lt(NULL), rt(NULL) { }
+    AVLTreeNode<K,T> *next[2];
+    AVLTreeNode(K key, T item) : key(key), item(item), height(0) {
+        this->next[0] = this->next[1] = NULL;
+    }
     ~AVLTreeNode() {
-        if (lt != NULL) delete lt;
-        if (rt != NULL) delete rt;    
+        if (next[0] != NULL) delete next[0];
+        if (next[1] != NULL) delete next[1];
     }
 };
 
@@ -27,71 +29,50 @@ private:
         return node == NULL ? -1 : (long long)node->height;
     }
     void update_height(AVLTreeNode<K,T> *node) {
-        node->height = (size_t)(1 + std::max(height(node->lt), height(node->rt)));
+        node->height = (size_t)(1 + std::max(height(node->next[0]), height(node->next[1])));
     }
 
-    AVLTreeNode<K,T> *rotate_ll(AVLTreeNode<K,T> *node) {
-        AVLTreeNode<K,T> *rotated = node->lt;
-        node->lt = rotated->rt;
-        rotated->rt = node;
+    AVLTreeNode<K,T> *rotation(AVLTreeNode<K,T> *node, bool dir) {
+        AVLTreeNode<K,T> *pivot = node->next[1-dir];
+        node->next[1-dir] = pivot->next[dir];
+        pivot->next[dir] = node;
         update_height(node);
-        update_height(rotated);
-        return rotated;
-    }
-    
-    AVLTreeNode<K,T> *rotate_lr(AVLTreeNode<K,T> *node) {
-        AVLTreeNode<K,T> *rotated = node->lt->rt;
-        node->lt->rt = rotated->lt;
-        rotated->lt = node->lt;
-        node->lt = rotated->rt;
-        rotated->rt = node;
-        update_height(node);
-        update_height(rotated->lt);
-        update_height(rotated);
-        return rotated;
+        update_height(pivot);
+        return pivot;
     }
 
-    AVLTreeNode<K,T> *rotate_rr(AVLTreeNode<K,T> *node) {
-        AVLTreeNode<K,T> *rotated = node->rt;
-        node->rt = rotated->lt;
-        rotated->lt = node;
+    AVLTreeNode<K,T> *double_rotation(AVLTreeNode<K,T> *node, bool dir) {
+        AVLTreeNode<K,T> *pivot = node->next[1-dir]->next[dir];
+        node->next[1-dir]->next[dir] = pivot->next[1-dir];
+        pivot->next[1-dir] = node->next[1-dir];
+        node->next[1-dir] = pivot->next[dir];
+        pivot->next[dir] = node;
         update_height(node);
-        update_height(rotated);
-        return rotated;
-    }
-
-    AVLTreeNode<K,T> *rotate_rl(AVLTreeNode<K,T> *node) {
-        AVLTreeNode<K,T> *rotated = node->rt->lt;
-        node->rt->lt = rotated->rt;
-        rotated->rt = node->rt;
-        node->rt = rotated->lt;
-        rotated->lt = node;
-        update_height(node);
-        update_height(rotated->rt);
-        update_height(rotated);
-        return rotated;
+        update_height(pivot->next[1-dir]);
+        update_height(pivot);
+        return pivot;
     }
 
     AVLTreeNode<K,T> *balance(AVLTreeNode<K,T> *node) {
         if (node == NULL)
             return node;
-        long long height_l = height(node->lt);
-        long long height_r = height(node->rt);
+        long long height_l = height(node->next[0]);
+        long long height_r = height(node->next[1]);
         long long delta = height_l - height_r;
         if (std::abs(delta) <= 1) {
             node->height = 1 + std::max(height_l, height_r);
             return node;
         }
         if (delta > 0) {
-            if (height(node->lt->lt) > height(node->lt->rt))
-                return rotate_ll(node);
+            if (height(node->next[0]->next[0]) > height(node->next[0]->next[1]))
+                return rotation(node, 1);
             else
-                return rotate_lr(node);
+                return double_rotation(node, 1);
         } else {
-            if (height(node->rt->lt) > height(node->rt->rt))
-                return rotate_rl(node);
+            if (height(node->next[1]->next[0]) > height(node->next[1]->next[1]))
+                return double_rotation(node, 0);
             else
-                return rotate_rr(node);
+                return rotation(node, 0);
         }
     }
 
@@ -99,18 +80,18 @@ private:
         if (node == NULL)
             return new AVLTreeNode<K,T>(key, item);
         if (key < node->key)
-            node->lt = insert(key, item, node->lt);
+            node->next[0] = insert(key, item, node->next[0]);
         else
-            node->rt = insert(key, item, node->rt);
+            node->next[1] = insert(key, item, node->next[1]);
         return balance(node);
     }
 
-    AVLTreeNode<K,T> *leftmost(AVLTreeNode<K,T> *node, AVLTreeNode<K,T> **lt) {
-        if (node->lt == NULL) {
-            *lt = node;
-            return node->rt;
+    AVLTreeNode<K,T> *leftmost(AVLTreeNode<K,T> *node, AVLTreeNode<K,T> *&lt) {
+        if (node->next[0] == NULL) {
+            lt = node;
+            return node->next[1];
         }
-        node->lt = leftmost(node->lt, lt);
+        node->next[0] = leftmost(node->next[0], lt);
         return balance(node);
     }
 
@@ -118,22 +99,22 @@ private:
         if (node == NULL)
             return node;
         if (key < node->key)
-            node->lt = remove(key, node->lt);
+            node->next[0] = remove(key, node->next[0]);
         else if (key > node->key)
-            node->rt = remove(key, node->rt);
+            node->next[1] = remove(key, node->next[1]);
         else {
             AVLTreeNode<K,T> *removed = node;
-            if (removed->lt == NULL)
-                node = removed->rt;
-            else if (removed->rt == NULL)
-                node = removed->lt;
+            if (removed->next[0] == NULL)
+                node = removed->next[1];
+            else if (removed->next[1] == NULL)
+                node = removed->next[0];
             else {
-                removed->rt = leftmost(removed->rt, &node);
-                node->lt = removed->lt;
-                node->rt = removed->rt;
+                removed->next[1] = leftmost(removed->next[1], node);
+                node->next[0] = removed->next[0];
+                node->next[1] = removed->next[1];
             }
-            removed->lt = NULL;
-            removed->rt = NULL;
+            removed->next[0] = NULL;
+            removed->next[1] = NULL;
             delete removed;
             --n;
         }
@@ -150,9 +131,9 @@ public:
         AVLTreeNode<K,T> *current = root;
         while (current != NULL)
             if (key < current->key)
-                current = current->lt;
+                current = current->next[0];
             else if (key > current->key)
-                current = current->rt;
+                current = current->next[1];
             else
                 return &current->item;
         return NULL;
@@ -180,8 +161,8 @@ public:
             return;
         }
         ss << "(" << node->key << ":" << node->item << " ";
-        to_string(ss, node->lt);
-        to_string(ss, node->rt);
+        to_string(ss, node->next[0]);
+        to_string(ss, node->next[1]);
         ss << ")";
     }
 };
