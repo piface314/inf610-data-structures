@@ -17,6 +17,7 @@
 #include "heap/binary-heap.hpp"
 #include "tree/bin-tree.hpp"
 #include "tree/avl-tree.hpp"
+#include "tree/red-black-tree.hpp"
 
 
 void lists();
@@ -105,9 +106,11 @@ void heaps() {
 void trees() {
     BinTree<char,int> bin_tree;
     AVLTree<char,int> avl_tree;
+    RedBlackTree<char,int> rb_tree;
     Tree<char,int> *trees[] = {
         &bin_tree,
-        &avl_tree
+        &avl_tree,
+        &rb_tree
     };
     for (auto tree : trees)
         test_tree(*tree);

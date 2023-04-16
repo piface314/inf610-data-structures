@@ -1,0 +1,168 @@
+#ifndef RED_BLACK_TREE_H
+#define RED_BLACK_TREE_H
+
+#include "tree.hpp"
+#include "../colors.h"
+#include <sstream>
+
+enum class RBColor { BLACK, RED };
+
+template <typename K, typename T>
+class RBTreeNode {
+public:
+    K key;
+    T item;
+    RBColor color;
+    RBTreeNode<K,T> *next[2];
+    RBTreeNode(K key, T item) : key(key), item(item), color(RBColor::RED) {
+        this->next[0] = this->next[1] = NULL;
+    }
+    ~RBTreeNode() {
+        if (next[0] != NULL) delete next[0];
+        if (next[1] != NULL) delete next[1];
+    }
+};
+
+template <typename K, typename T>
+class RedBlackTree : public Tree<K,T> {
+private:
+    size_t n;
+    RBTreeNode<K,T> *root;
+    RBColor color(RBTreeNode<K,T> *node) {
+        return node == NULL ? RBColor::BLACK : node->color;
+    }
+
+    RBTreeNode<K,T> *rotation(RBTreeNode<K,T> *node, bool dir) {
+        RBTreeNode<K,T> *pivot = node->next[1-dir];
+        node->next[1-dir] = pivot->next[dir];
+        pivot->next[dir] = node;
+        return pivot;
+    }
+
+    RBTreeNode<K,T> *double_rotation(RBTreeNode<K,T> *node, bool dir) {
+        RBTreeNode<K,T> *pivot = node->next[1-dir]->next[dir];
+        node->next[1-dir]->next[dir] = pivot->next[1-dir];
+        pivot->next[1-dir] = node->next[1-dir];
+        node->next[1-dir] = pivot->next[dir];
+        pivot->next[dir] = node;
+        return pivot;
+    }
+
+    RBTreeNode<K,T> *insert(K& key, T& item, RBTreeNode<K,T> *node, bool &end) {
+        if (node == NULL)
+            return new RBTreeNode<K,T>(key, item);
+        bool dir = key >= node->key;
+        node->next[dir] = insert(key, item, node->next[dir], end);
+        if (end)
+            return node;
+        if (color(node->next[dir]) == RBColor::BLACK)
+            // Case 2: new node parent is black
+            end = true;
+        else if (color(node->next[1-dir]) == RBColor::RED) {
+            // Case 3: other child is red
+            node->next[0]->color = node->next[1]->color = RBColor::BLACK;
+            node->color = RBColor::RED;
+        } else if (color(node->next[dir]->next[1-dir]) == RBColor::RED) {
+            // Case 4: unbalanced node is "inner"
+            node = double_rotation(node, 1-dir);
+            node->next[1-dir]->color = RBColor::RED;
+            node->color = RBColor::BLACK;
+        } else if (color(node->next[dir]->next[dir]) == RBColor::RED) {
+            // Case 5: unbalanced node is "outer"
+            node = rotation(node, 1-dir);
+            node->next[1-dir]->color = RBColor::RED;
+            node->color = RBColor::BLACK;
+        }
+        return node;
+    }
+
+    RBTreeNode<K,T> *leftmost(RBTreeNode<K,T> *node, RBTreeNode<K,T> *&lt) {
+        if (node->next[0] == NULL) {
+            lt = node;
+            return node->next[1];
+        }
+        node->next[0] = leftmost(node->next[0], lt);
+        return node;
+    }
+
+    RBTreeNode<K,T> *remove(K& key, RBTreeNode<K,T> *node) {
+        // TODO: implement balance in removal
+        if (node == NULL)
+            return node;
+        if (key < node->key)
+            node->next[0] = remove(key, node->next[0]);
+        else if (key > node->key)
+            node->next[1] = remove(key, node->next[1]);
+        else {
+            RBTreeNode<K,T> *removed = node;
+            if (removed->next[0] == NULL)
+                node = removed->next[1];
+            else if (removed->next[1] == NULL)
+                node = removed->next[0];
+            else {
+                removed->next[1] = leftmost(removed->next[1], node);
+                node->next[0] = removed->next[0];
+                node->next[1] = removed->next[1];
+            }
+            removed->next[0] = NULL;
+            removed->next[1] = NULL;
+            delete removed;
+            --n;
+        }
+        return node;
+    }
+
+public:
+    RedBlackTree() : n(0), root(NULL) { }
+    ~RedBlackTree() { delete root; }
+    size_t size() { return n; }
+    bool empty() { return n == 0; }
+
+    T *search(K key) {
+        RBTreeNode<K,T> *current = root;
+        while (current != NULL)
+            if (key < current->key)
+                current = current->next[0];
+            else if (key > current->key)
+                current = current->next[1];
+            else
+                return &current->item;
+        return NULL;
+    }
+
+    void insert(K key, T item) {
+        bool end = false;
+        root = insert(key, item, root, end);
+        root->color = RBColor::BLACK;
+        ++n;
+    }
+
+    void remove(K key) {
+        root = remove(key, root);
+        if (root != NULL)
+            root->color = RBColor::BLACK;
+    }
+
+    std::string to_string() {
+        std::stringstream ss;
+        ss << "RedBlackTree";
+        to_string(ss, root);
+        return ss.str();
+    }
+
+    void to_string(std::stringstream& ss, RBTreeNode<K,T> *node) {
+        if (node == NULL) {
+            ss << CL_BG_BLACK CL_FG_WHITE "()" CL_RESET;
+            return;
+        }
+        std::string cl = color(node) == RBColor::BLACK ? CL_BG_BLACK : CL_BG_RED;
+        ss << cl << CL_FG_WHITE "(" << node->key << ":" << node->item << " ";
+        to_string(ss, node->next[0]);
+        to_string(ss, node->next[1]);
+        ss << cl << CL_FG_WHITE ")" << CL_RESET;
+    }
+};
+
+void test_tree(Tree<char,int> &tree);
+
+#endif
