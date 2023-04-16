@@ -24,7 +24,10 @@ private:
     BinNode<K,T> *root;
 public:
     BinTree() : n(0), root(NULL) { }
-    ~BinTree() { delete root; }
+    ~BinTree() {
+        if (root != NULL)
+            delete root;
+    }
     size_t size() { return n; }
     bool empty() { return n == 0; }
 

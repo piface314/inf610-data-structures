@@ -123,7 +123,10 @@ private:
 
 public:
     AVLTree() : n(0), root(NULL) { }
-    ~AVLTree() { delete root; }
+    ~AVLTree() {
+        if (root != NULL)
+            delete root;
+    }
     size_t size() { return n; }
     bool empty() { return n == 0; }
 

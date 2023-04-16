@@ -114,7 +114,10 @@ private:
 
 public:
     RedBlackTree() : n(0), root(NULL) { }
-    ~RedBlackTree() { delete root; }
+    ~RedBlackTree() {
+        if (root != NULL)
+            delete root;
+    }
     size_t size() { return n; }
     bool empty() { return n == 0; }
 
