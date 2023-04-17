@@ -18,6 +18,7 @@
 #include "tree/bin-tree.hpp"
 #include "tree/avl-tree.hpp"
 #include "tree/red-black-tree.hpp"
+#include "tree/b-tree.hpp"
 
 
 void lists();
@@ -107,10 +108,12 @@ void trees() {
     BinTree<char,int> bin_tree;
     AVLTree<char,int> avl_tree;
     RedBlackTree<char,int> rb_tree;
+    BTree<char,int,2> b_tree;
     Tree<char,int> *trees[] = {
         &bin_tree,
         &avl_tree,
-        &rb_tree
+        &rb_tree,
+        &b_tree
     };
     for (auto tree : trees)
         test_tree(*tree);

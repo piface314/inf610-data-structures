@@ -2,11 +2,13 @@
 
 void test_tree(Tree<char,int> &tree) {
     std::cout << tree << std::endl;
-    std::cout << "Inserting (C,2), (A,3), (T,5), (S,7):\n";
+    std::cout << "Inserting (C,2), (A,3), (T,5), (S,7), (D,41), (H,43):\n";
     tree.insert('C', 2);
     tree.insert('A', 3);
     tree.insert('T', 5);
     tree.insert('S', 7);
+    tree.insert('D', 41);
+    tree.insert('H', 43);
     std::cout << tree << std::endl;
 
     std::cout << "Removing C:\n";
